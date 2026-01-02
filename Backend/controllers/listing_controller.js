@@ -13,10 +13,7 @@ export const getAllListings = async (req, res) => {
         const listings = await Listing.find({
             status: "approved"
         });
-        if (listings.length === 0) {
-            res.status(200).json({ message: "We will create listings later,come back later" });
-        }
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             listings
         })
@@ -132,7 +129,7 @@ export const createListing = async (req, res) => {
             type: type || "single",
             description: description || "",
             images: images || [],
-            status:"pending"
+            status: "pending"
         });
 
         res.status(201).json({
