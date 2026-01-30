@@ -1,6 +1,15 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user_model.js";
 
+// {
+//   "name":"Arav",
+//   "email":"Arav2@gmail.com",
+//   "password":"123456",
+//   "role":"owner",
+//   "phone":"6789902440",
+//   "address":"Gopalpur,Bihar"
+// }
+// 697cdd5f65bf5c40f96d1546
 export const protectRoute = async (req, res, next) => {
   try {
     const token = req.cookies.jwt;
