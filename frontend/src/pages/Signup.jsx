@@ -23,7 +23,6 @@ function Signup() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // Convert image to Base64
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -39,7 +38,6 @@ function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Frontend validation
     if (!form.name || !form.email || !form.password) {
       return alert("All fields are required");
     }
@@ -57,12 +55,12 @@ function Signup() {
     try {
       const payload = {
         ...form,
-        profilePicture, // base64 string
+        profilePicture,
       };
 
       await signup(payload);
       alert("Signup successful");
-      navigate("/");
+      navigate("/login"); // ✅ ONLY CHANGE
     } catch (err) {
       alert(err.response?.data?.message || "Signup failed");
     } finally {
@@ -78,7 +76,6 @@ function Signup() {
           Create Account
         </h2>
 
-        {/* Profile Picture */}
         <div className="flex justify-center mb-6">
           <div
             onClick={() => fileInputRef.current.click()}
@@ -125,7 +122,6 @@ function Signup() {
             className="w-full border p-3 rounded-xl"
           />
 
-          {/* Role */}
           <div className="flex gap-6">
             <label>
               <input
@@ -148,7 +144,6 @@ function Signup() {
             </label>
           </div>
 
-          {/* Owner-only fields */}
           {form.role === "owner" && (
             <>
               <input
