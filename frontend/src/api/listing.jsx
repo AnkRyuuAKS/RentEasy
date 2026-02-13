@@ -12,6 +12,12 @@ export const getListing = async () => {
   return res.data;
 }
 
+export const getListingById = async (id) => {
+  const res = await API.get(`/${id}`);
+  return res.data;
+};
+
+
 export const searchListing = async (data) => {
     const res = await API.get(`/search/${encodeURIComponent(data)}`);
     return res.data;
