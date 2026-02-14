@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getListing, searchListing } from "../api/listing";
 import { Search } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 function Hero() {
   const cards = [
@@ -39,8 +40,9 @@ function Hero() {
   const [searchResult, setSearchResult] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
+  const navigate = useNavigate();
 
-   const generateSuggestions = () => {
+  const generateSuggestions = () => {
     if (!listings || listings.length === 0) return;
 
     const shuffled = [...listings]
@@ -55,7 +57,7 @@ function Hero() {
     setShowDropdown(true);
   };
 
-  const handleSearch = async() => {
+  const handleSearch = async () => {
     if (!searchText.trim()) return;
     const res = await searchListing(searchText);
     console.log(res.searchMatches || []);
@@ -82,6 +84,9 @@ function Hero() {
     fetchData()
   }, []);
 
+  const handleClick = (id) => {
+    navigate(`/listing/${id}`);
+  };
   return (
     <section className="bg-gray-50">
       {/* Hero Banner */}
@@ -95,45 +100,45 @@ function Hero() {
 
         {/* 🔍 Search Box */}
         <div className="mt-8 max-w-xl relative">
-      
-      {/* Search Box */}
-      <div className="flex items-center bg-white rounded-full shadow-md px-4 py-3">
-        <input
-          type="text"
-          value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
-          onFocus={handleFocus}
-          placeholder="Search destinations"
-          className="flex-1 outline-none text-gray-700 placeholder-gray-400"
-        />
 
-        <button
-          onClick={handleSearch}
-          className="ml-3 bg-black text-white px-5 py-2 rounded-full hover:bg-gray-800"
-        >
-          <Search size={18} />
-        </button>
-      </div>
+          {/* Search Box */}
+          <div className="flex items-center bg-white rounded-full shadow-md px-4 py-3">
+            <input
+              type="text"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+              onFocus={handleFocus}
+              placeholder="Search destinations"
+              className="flex-1 outline-none text-gray-700 placeholder-gray-400"
+            />
 
-      {/* Dropdown */}
-      {showDropdown && suggestions.length > 0 && (
-        <div className="absolute top-full left-0 w-full bg-white shadow-lg rounded-xl mt-2 z-50">
-          {suggestions.map((item, index) => (
-            <div
-              key={index}
-              onClick={() => {
-                setSearchText(item.address);
-                setShowDropdown(false);
-              }}
-              className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
+            <button
+              onClick={handleSearch}
+              className="ml-3 bg-black text-white px-5 py-2 rounded-full hover:bg-gray-800"
             >
-              {item.address}
-            </div>
-          ))}
-        </div>
-      )}
+              <Search size={18} />
+            </button>
+          </div>
 
-    </div>
+          {/* Dropdown */}
+          {showDropdown && suggestions.length > 0 && (
+            <div className="absolute top-full left-0 w-full bg-white shadow-lg rounded-xl mt-2 z-50">
+              {suggestions.map((item, index) => (
+                <div
+                  key={index}
+                  onClick={() => {
+                    setSearchText(item.address);
+                    setShowDropdown(false);
+                  }}
+                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
+                >
+                  {item.address}
+                </div>
+              ))}
+            </div>
+          )}
+
+        </div>
       </div>
 
       {/* Cards Grid */}
@@ -160,6 +165,7 @@ function Hero() {
               {listings.map((listing) => (
                 <div
                   key={listing._id}
+                  onClick={() => handleClick(listing._id)}
                   className="cursor-pointer rounded-xl overflow-hidden hover:scale-105 transition-transform duration-300 bg-white shadow"
                 >
                   <img
